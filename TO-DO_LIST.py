@@ -24,27 +24,46 @@ while True:
             
         
     def view_task():
-        for index, task in enumerate(tasks, start=1):
-            print(f"{index}. {task}")
+        if len(tasks)== 0:
+            print("NO task available")
+            return
+        else:
+            for index, task in enumerate(tasks, start=1):
+                print(f"{index}. {task}")
         
     def update_task():
-        print(view_task())
-        user_1 = int(input("Enter task number to update :- "))
-        new_task = input("Enter new task :- ")
-        tasks[user_1-1]= new_task
-        
-        print("\nTask updated successfully")
+        if len(tasks)== 0:
+            print("NO task available")
+            return
+        else:
+            print(view_task())
+            user_1 = int(input("Enter task number to update :- "))
+            
+            if 1 <= user_1 <= len(tasks):
+                new_task = input("Enter new task :- ")
+                tasks[user_1-1]= new_task
+            
+                print("\nTask updated successfully")
+            else:
+                print("No that much task is available")
+                
         
     def delete_file():
-        print(view_task())
-        user_2 = int(input("Enter task number to Remove :- "))
-        tasks.pop(user_2-1)
-        print("Task Removed successfully")
-          
-
-
-
-
+        if len(tasks)== 0:
+            print("NO task available")
+            return
+        else:
+            print(view_task())
+            user_2 = int(input("Enter task number to Remove :- "))
+            
+            if 1 <= user_2 <= len(tasks):
+                tasks.pop(user_2-1)
+                print("Task Removed successfully")
+            else:
+                print("No much task is available")
+                
+            
+            
     if check == 1:
         add_task()
         
@@ -67,4 +86,9 @@ while True:
         break
     else:
         print("Invalid input! please enter only 'yes' or 'no'.")
-        
+                
+
+
+
+
+    
