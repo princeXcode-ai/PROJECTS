@@ -6,11 +6,20 @@ class Book:
         self.title= title
         self.author= author
         self.quantity = quantity
+        
+class Client:
+    def __init__(self,book_id,quantity,name,date):
+        self.book_id = book_id
+        self.quantity=quantity
+        self.name= name
+        self.date = date
+        
             
 
 class Library:
     def __init__(self):
         self.books = {}
+        self.client = {}
             
             
     def add_book(self):
@@ -102,8 +111,73 @@ class Library:
                 print("\nNo book found")
                     
         
+    def issue_book(self):
+        if len(self.books)==0:
+            print("No book available")
             
+        else:
+            self.view_book()
+            issue= input("Enter book id for issue :- ")
+            
+            if issue in self.books:
+                book = self.books[issue]
+                if book.quantity <= 0:
+                    print("Currently this book is not available")
+                    
+                else:
+                    name= input("Enter your name:-") .capitalize() .strip()
+                    
+                    if name in self.client:
+                        print("Enter another name, this name aleady exists")
+                        
+                    else:
+                        date = input("Date(DD/MM/YYYY):- ")
+                        copy= int(input("No. of book issued :- "))
+                        
+                        if copy > book.quantity:
+                            print("No , we can't issue book")
+                            
+                        else:
+                            book2= Client(issue,copy,name,date)
+                            self.client[name]= book2
+                            
+                            book.quantity = book.quantity - copy
+                            print("your book is issued,take your book")
+                    
+            else:
+                print("this book id is not available")
+                        
+    def return_book(self):
+        name = input("Enter name :- ") .capitalize() .strip()
         
+        if name in self.client:
+            book3 = self.client[name]
+            print(f"\nNo. of book issued = {book3.quantity}")
+            print(f"Issued Date = {book3.date}")
+            
+            user_spark= int(input("\nHow many book you want to return :- "))
+            user_plk= input("please enter book_id :- ")
+            
+            if book3.quantity >= user_spark:
+                if user_plk in self.books:
+                    book4= self.books[user_plk]
+                    book4.quantity = book4.quantity + user_spark
+                    book3.quantity = book3.quantity - user_spark
+                    print("\nyou successfully ruturn your book")
+                    if book3.quantity == 0:
+                        self.client.pop(name)
+                        
+                    else:
+                        print("you have some books to return")
+                    
+                else:
+                    print("this book id is not valid")
+            else:
+                print("You return mmore no. of books")
+            
+        else:
+            print("this name is not found in library record")
+                
         
             
 user= Library()
@@ -118,9 +192,6 @@ while True:
     print("Press 7 for return book :- ")
 
     check = int(input("Enter, what to do :- "))
-
-
-       
 
             
     if check == 1:
@@ -137,6 +208,15 @@ while True:
         
     elif check == 5:
         user.delete_book()
+        
+    elif check == 6:
+        user.issue_book()
+        
+    elif check == 7:
+        user.return_book()
+        
+    else:
+        print("Invalid input")
         
         
     user_l =input("do you want to do again [yes/no]:- ").lower() .strip()
